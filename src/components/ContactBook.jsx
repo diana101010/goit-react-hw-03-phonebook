@@ -1,47 +1,43 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
-class ContactBook extends Component {
-  state = {
-    contacts: [],
-  };
+const ContactBook = () => {
+  const [contacts, setContacts] = useState([]);
 
-  componentDidMount() {
+  useEffect(() => {
     const storedContacts = localStorage.getItem('contacts');
     if (storedContacts) {
-      this.setState({ contacts: JSON.parse(storedContacts) });
+      setContacts(JSON.parse(storedContacts));
     }
-  }
+  }, []);
 
-  componentWillUnmount() {
-    localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-  }
-
-  handleAddContact = contact => {
-    this.setState(prevState => ({
-      contacts: [...prevState.contacts, contact],
-    }));
+  const addContact = newContact => {
+    const updatedContacts = [...contacts, newContact];
+    setContacts(updatedContacts);
+    localStorage.setItem('contacts', JSON.stringify(updatedContacts));
   };
 
-  handleDeleteContact = contactId => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
-    }));
+  const deleteContact = index => {
+    const updatedContacts = contacts.filter((contact, i) => i !== index);
+    setContacts(updatedContacts);
+    localStorage.setItem('contacts', JSON.stringify(updatedContacts));
   };
 
-  render() {
-    return (
-      <div>
-        <h1>Contact Book</h1>
-        <ul>
-          {this.state.contacts.map(contact => (
-            <li key={contact.id}>
-              {contact.name}: {contact.phone}
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      {' '}
+      <h1>Contact Book</h1>{' '}
+      <ul>
+        {' '}
+        {contacts.map((contact, index) => (
+          <li key={index}>
+            {' '}
+            {contact.name} - {contact.phone}{' '}
+            <button onClick={() => deleteContact(index)}>Delete</button>{' '}
+          </li>
+        ))}{' '}
+      </ul>{' '}
+    </div>
+  );
+};
 
 export default ContactBook;
