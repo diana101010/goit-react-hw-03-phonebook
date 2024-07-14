@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
 const ContactBook = () => {
   const [contacts, setContacts] = useState([]);
 
@@ -10,8 +9,8 @@ const ContactBook = () => {
     }
   }, []);
 
-  const addContact = newContact => {
-    const updatedContacts = [...contacts, newContact];
+  const addContact = contact => {
+    const updatedContacts = [...contacts, contact];
     setContacts(updatedContacts);
     localStorage.setItem('contacts', JSON.stringify(updatedContacts));
   };
@@ -36,6 +35,20 @@ const ContactBook = () => {
           </li>
         ))}{' '}
       </ul>{' '}
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          const name = e.target.elements.name.value;
+          const phone = e.target.elements.phone.value;
+          addContact({ name, phone });
+          e.target.reset();
+        }}
+      >
+        {' '}
+        <input type="text" name="name" placeholder="Name" />{' '}
+        <input type="text" name="phone" placeholder="Phone" />{' '}
+        <button type="submit">Add Contact</button>{' '}
+      </form>{' '}
     </div>
   );
 };
