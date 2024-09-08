@@ -45,7 +45,7 @@ class ContactBook extends Component {
     );
 
     if (existingContact) {
-      alert(`${newContact.name} is already in contacts.`);
+      alert(`${newContact.name} is already in contacts!`);
       return;
     }
 
